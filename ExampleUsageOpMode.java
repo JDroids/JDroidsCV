@@ -72,9 +72,5 @@ public class ExampleUsageOpMode extends LinearOpMode{
                 blueJewelsFound++;
             }
         }
-
-        lowerJewelArms(this);
-
-        JDColor jewelDetected = detectJewelColor(this);
     }
 }

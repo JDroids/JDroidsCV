@@ -78,7 +78,7 @@ public class jewelDetectionOpenCV extends OpenCVPipeline {
         croppedImage = rgba; //Get rid of this
 
 
-        //Cropping code; causes phone to black screen and close app (needs to be commented to be able to figure out where to crop using below code)
+        //Cropping code, can be commented so that the crop determiner is more useful
         if(firstTimeThroughLoop) {
             rectCrop = new Rect(20, 240, 105, 240);
             firstTimeThroughLoop = false;

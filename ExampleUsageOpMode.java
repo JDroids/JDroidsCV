@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.resources.constants;
-import org.firstinspires.ftc.teamcode.resources.jewelDetectionOpenCV;
+import org.firstinspires.ftc.teamcode.resources.JewelDetectionOpenCV;
+import org.firstinspires.ftc.teamcode.resources.jewelDetectionOpenCV.JDColor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,14 +25,11 @@ import static org.firstinspires.ftc.teamcode.resources.hardware.*;
 
 @Autonomous(name="JDroids CV Example")
 
-public class jewelDetectionOpMode extends LinearOpMode{
+public class ExampleUsageOpMode extends LinearOpMode{
     @Override
 
     public void runOpMode() throws InterruptedException{
-        initHardwareMap(hardwareMap);
-        initServos(constants.AUTONOMOUS);
-
-        ArrayList<constants.JDColor> listOfJewelColors = new ArrayList<constants.JDColor>();
+        ArrayList<JDColor> listOfJewelColors = new ArrayList<JDColor>();
 
         jewelDetectionOpenCV jewelVision = new jewelDetectionOpenCV();
         // can replace with ActivityViewDisplay.getInstance() for fullscreen
@@ -67,7 +64,7 @@ public class jewelDetectionOpMode extends LinearOpMode{
         int redJewelsFound = 0;
         int blueJewelsFound = 0;
 
-        for(constants.JDColor color : listOfJewelColors){
+        for(JDColor color : listOfJewelColors){
             if(color == constants.JDColor.RED){
                 redJewelsFound++;
             }
@@ -78,41 +75,6 @@ public class jewelDetectionOpMode extends LinearOpMode{
 
         lowerJewelArms(this);
 
-        int certainty = 0;
-
-        constants.JDColor jewelOnRight = detectJewelColor(this);
-
-        //We assume we are on the blue side
-
-        //Knock Jewel takes the color of the jewel on the RIGHT side, which is what we detect with the color sensor, but with OpenCV we detect the LEFT one
-        if(blueJewelsFound >= 4 && jewelOnRight == constants.JDColor.RED){
-            certainty = blueJewelsFound * 20;
-
-            telemetry.addData("Jewel On Left", "Blue");
-            telemetry.addData("Certainty", certainty);
-            Log.d("JewelOnLeft", "Blue");
-            Log.d("Certainty", Integer.toString(certainty));
-
-            knockJewel(constants.JDColor.RED, constants.JDColor.BLUE, this);
-        }
-        else if(redJewelsFound >= 4 && jewelOnRight == constants.JDColor.BLUE){
-            certainty = redJewelsFound * 20;
-
-            telemetry.addData("Jewel On Left", "Red");
-            telemetry.addData("Certainty", certainty);
-            Log.d("JewelOnLeft", "Red");
-            Log.d("Certainty", Integer.toString(certainty));
-
-            knockJewel(constants.JDColor.BLUE, constants.JDColor.BLUE, this);
-        }
-        else{
-            telemetry.addData("Jewel On Left", "Unclear");
-            Log.d("JewelOnLeft", "Unknown");
-
-            knockJewel(jewelOnRight, constants.JDColor.BLUE, this);
-        }
-
-        telemetry.update();
-        sleep(2000);
+        JDColor jewelDetected = detectJewelColor(this);
     }
 }
